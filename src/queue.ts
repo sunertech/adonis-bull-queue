@@ -128,8 +128,7 @@ export class QueueManager {
         try {
           jobClassInstance = await this.#instantiateJob(job)
         } catch (e) {
-          this.#logger.error(`Job ${job.name} was not able to be created`)
-          this.#logger.error(e)
+          this.#logger.error(e, `Job ${job.name} was not able to be created`)
           return
         }
 
@@ -141,7 +140,7 @@ export class QueueManager {
     )
 
     worker.on('failed', async (job, error) => {
-      this.#logger.error(error.message, [])
+      this.#logger.error(error)
 
       // If removeOnFail is set to true in the job options, job instance may be undefined.
       // This can occur if worker maxStalledCount has been reached and the removeOnFail is set to true.
